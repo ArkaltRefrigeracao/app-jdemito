@@ -44,7 +44,7 @@ placa = st.selectbox("", placas_filtradas["PLACA"])
 
 # Exibir peças disponíveis
 st.markdown(f"<p style='{titulo_style}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
-pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO", "LINK_IMAGEM"]].values.tolist()
+pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
 # Exibição das peças com caixas de seleção e imagens
 pecas_selecionadas = []
