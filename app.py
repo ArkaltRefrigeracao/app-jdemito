@@ -31,12 +31,15 @@ with col1:
 
 with col2:
     st.markdown("""
-        <h1 style='text-align: center; color: #003366;'>
+        <h1 style='text-align: center; 
+                   background: linear-gradient(to right, #003366, #0055A4, #666666); 
+                   -webkit-background-clip: text; 
+                   color: transparent;'>
             CATÁLOGO DE PEÇAS
         </h1>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h4 style='text-align: center; color: #FFD700;'>Grupo J. Demito</h4>", unsafe_allow_html=True)  # Amarelo Sol Nascente
+    st.markdown("<h4 style='text-align: center; color: gray;'>Grupo J. Demito</h4>", unsafe_allow_html=True)
 
 # Padronização do estilo dos títulos
 titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"  # Azul escuro
