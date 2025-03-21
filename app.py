@@ -5,6 +5,9 @@ import urllib.parse
 # 🔹 Esta linha DEVE ser a primeira do código!
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 
+# URL base do repositório GitHub onde as imagens estão armazenadas
+GITHUB_REPO_URL = "https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/"
+
 # Função para carregar os dados da planilha
 @st.cache_data(ttl=60)  # Atualiza os dados a cada 60 segundos
 def load_data():
@@ -46,12 +49,24 @@ placa = st.selectbox("", placas_filtradas["PLACA"])
 st.markdown(f"<p style='{titulo_style}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
 pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
-# Exibição das peças com caixas de seleção
+# Exibição das peças com caixas de seleção e imagens do GitHub
 pecas_selecionadas = []
+imagem_padrao_url = f"{GITHUB_REPO_URL}imagem_padrao.jpg"  # Substitua pela imagem padrão no GitHub
+
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
-    if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
-        pecas_selecionadas.append((peca, codigo))
+    imagem_url = f"{GITHUB_REPO_URL}{codigo}.jpg"  # URL da imagem da peça
+
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        try:
+            st.image(imagem_url, width=50)  # Exibir imagem da peça
+        except:
+            st.image(imagem_padrao_url, width=50)  # Se der erro, usa a imagem padrão
+    
+    with col2:
+        if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
+            pecas_selecionadas.append((peca, codigo))
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
