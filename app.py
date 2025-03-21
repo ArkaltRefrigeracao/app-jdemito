@@ -8,21 +8,6 @@ st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 # URL base do repositório GitHub onde as imagens estão armazenadas
 GITHUB_REPO_URL = "https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/"
 
-# 🔹 Adicionar fundo azul claro via CSS (Imagem da internet)
-st.markdown("""
-    <style>
-    body {
-        background-image: url('https://www.colorhexa.com/d6e6f2.png');
-        background-size: cover;
-    }
-    .stApp {
-        background-color: rgba(214, 230, 242, 0.85); /* Azul claro com transparência */
-        padding: 20px;
-        border-radius: 10px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 # Função para carregar os dados da planilha
 @st.cache_data(ttl=60)
 def load_data():
@@ -40,6 +25,9 @@ df_placas, df_pecas = load_data()
 
 # Criar um layout flexível com colunas
 col1, col2, col3 = st.columns([1, 3, 1])  
+
+with col1:
+    st.image("arkaltfoto.JPG", width=120)  
 
 with col2:
     st.markdown("""
@@ -78,7 +66,7 @@ for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     if selecionado:
         pecas_selecionadas.append((peca, codigo))
         imagem_url = f"{GITHUB_REPO_URL}{codigo}.jpg"  # URL da imagem da peça
-        st.image(imagem_url, width=180)  # 🔹 Tamanho da imagem 180px
+        st.image(imagem_url, width=180)  # 🔹 Aumentei o tamanho da imagem para 180px
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
