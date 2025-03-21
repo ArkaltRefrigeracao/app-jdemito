@@ -48,7 +48,7 @@ pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].v
 
 # Exibição das peças com caixas de seleção e imagens
 pecas_selecionadas = []
-for idx, (peca, codigo, link_imagem) in enumerate(pecas_disponiveis):
+for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
     if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
         pecas_selecionadas.append((peca, codigo, link_imagem))
