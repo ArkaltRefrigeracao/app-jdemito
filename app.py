@@ -35,9 +35,10 @@ with col2:
 
 # Padronização do estilo dos títulos
 titulo_style = "font-size:20px; font-weight:bold; color:black;"
+titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"  # Azul escuro
 
-# Seleção do tipo de veículo
-st.markdown(f"<p style='{titulo_style}'>🚛 Escolha o tipo de veículo:</p>", unsafe_allow_html=True)
+# Seleção do tipo de veículo (com a cor alterada para azul escuro)
+st.markdown(f"<p style='{titulo_azul_escuro}'>🚛 Escolha o tipo de veículo:</p>", unsafe_allow_html=True)
 tipo_veiculo = st.selectbox("", df_placas["TIPO DE VEÍCULO"].unique())
 
 # Seleção da placa
