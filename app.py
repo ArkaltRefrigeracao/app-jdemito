@@ -1,8 +1,11 @@
 import streamlit as st
 import pandas as pd
 import urllib.parse
+import requests
+from io import BytesIO
+from PIL import Image
 
-# 🔹 Esta linha DEVE ser a primeira do código!
+# 🔹 Configuração da página
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 
 # Função para carregar os dados da planilha
@@ -46,18 +49,37 @@ placa = st.selectbox("", placas_filtradas["PLACA"])
 st.markdown(f"<p style='{titulo_style}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
 pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
+# Função para carregar a imagem da internet
+def carregar_imagem(url):
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return Image.open(BytesIO(response.content))
+    except Exception as e:
+        return None
+
 # Exibição das peças com caixas de seleção e imagens
 pecas_selecionadas = []
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
     if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
-        if codigo == 6196:
-            link_imagem = "/mnt/data/image.png"
-        else:
-            link_imagem = ""
+        # Mapeamento de código de peça para imagem no Google Drive
+        imagens_pecas = {
+            6196: "https://drive.google.com/uc?export=view&id=SEU_ID_AQUI",  # Substituir pelo ID correto
+            # Adicione mais códigos e imagens conforme necessário
+        }
+
+        link_imagem = imagens_pecas.get(codigo, "")  # Obtém a URL se existir
+
         pecas_selecionadas.append((peca, codigo, link_imagem))
+
+        # Baixar e exibir a imagem se houver um link
         if link_imagem:
-            st.image(link_imagem, width=150)
+            imagem = carregar_imagem(link_imagem)
+            if imagem:
+                st.image(imagem, width=150)
+            else:
+                st.warning("Imagem não pôde ser carregada.")
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
