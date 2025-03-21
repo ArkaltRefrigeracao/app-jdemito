@@ -30,11 +30,18 @@ with col1:
     st.image("arkaltfoto.JPG", width=120)  
 
 with col2:
-    st.markdown("<h1 style='text-align: center; color: orange;'>CATÁLOGO DE PEÇAS</h1>", unsafe_allow_html=True)
+    st.markdown("""
+        <h1 style='text-align: center; 
+                   background: linear-gradient(to right, #003366, #0055A4, #666666); 
+                   -webkit-background-clip: text; 
+                   color: transparent;'>
+            CATÁLOGO DE PEÇAS
+        </h1>
+    """, unsafe_allow_html=True)
+
     st.markdown("<h4 style='text-align: center; color: gray;'>Grupo J. Demito</h4>", unsafe_allow_html=True)
 
 # Padronização do estilo dos títulos
-titulo_style = "font-size:20px; font-weight:bold; color:black;"
 titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"  # Azul escuro
 titulo_azul_claro = "font-size:20px; font-weight:bold; color:#0055A4;"  # Azul mais claro
 titulo_cinza_claro = "font-size:20px; font-weight:bold; color:#666666;"  # Cinza mais claro
