@@ -59,7 +59,7 @@ for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     if selecionado:
         pecas_selecionadas.append((peca, codigo))
         imagem_url = f"{GITHUB_REPO_URL}{codigo}.jpg"  # URL da imagem da peça
-        st.image(imagem_url, width=100)  # Exibe a imagem apenas se a peça for selecionada
+        st.image(imagem_url, width=180)  # 🔹 Aumentei o tamanho da imagem para 180px
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
