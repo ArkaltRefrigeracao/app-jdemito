@@ -51,17 +51,7 @@ pecas_selecionadas = []
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
     if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
-        pecas_selecionadas.append((peca, codigo, link_imagem))
-    
-   for idx, (peca, codigo) in enumerate(pecas_disponiveis):
-    link_imagem = None  # Defina um valor padrão para evitar erro
-    unique_key = f"checkbox_{idx}"
-    if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
         pecas_selecionadas.append((peca, codigo))
-
-    if link_imagem:  # Evita erro se não houver link
-        st.image(link_imagem, width=150)
-
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
@@ -73,7 +63,7 @@ def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
     
     🛠️ Peças solicitadas:
     """
-    for peca, codigo, _ in pecas_selecionadas:
+    for peca, codigo in pecas_selecionadas:
         mensagem += f"- {peca} (Código: {codigo})\n"
     return mensagem.strip()
 
