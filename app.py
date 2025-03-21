@@ -5,6 +5,19 @@ import urllib.parse
 # 🔹 Configuração inicial do app
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 
+# Aplicando imagem de fundo
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: url('image.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Função para carregar os dados da planilha
 @st.cache_data(ttl=60)  # Atualiza os dados a cada 60 segundos
 def load_data():
@@ -48,14 +61,14 @@ pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].v
 
 # Exibição das peças com imagens e caixas de seleção
 pecas_selecionadas = []
-st.markdown("<div style='display: flex; flex-wrap: wrap; gap: 10px;'>", unsafe_allow_html=True)
+st.markdown("<div style='display: flex; flex-wrap: wrap; gap: 20px; align-items: center;'>", unsafe_allow_html=True)
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
     imagem_url = f"https://gilt-site.com/imagens/{codigo}.jpg"  # Ajuste o link conforme necessário
     
     col_img, col_text = st.columns([1, 4])
     with col_img:
-        st.image(imagem_url, width=60, use_column_width='auto')
+        st.image(imagem_url, width=80)
     with col_text:
         if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
             pecas_selecionadas.append((peca, codigo))
@@ -84,6 +97,7 @@ if pecas_selecionadas:
     link_whatsapp1 = f"https://api.whatsapp.com/send?phone={numero_whatsapp1}&text={urllib.parse.quote(mensagem_formatada)}"
     link_whatsapp2 = f"https://api.whatsapp.com/send?phone={numero_whatsapp2}&text={urllib.parse.quote(mensagem_formatada)}"
     
-    st.markdown(f'<a href="{link_whatsapp1}" style="display: block; padding: 10px; text-align: center; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px;">📞 Solicitar Orçamento (Vendedor Gustavo)</a>', unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown(f'<a href="{link_whatsapp2}" style="display: block; padding: 10px; text-align: center; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px;">📞 Solicitar Orçamento (Vendedor José)</a>', unsafe_allow_html=True)
+    st.markdown("<div style='display: flex; justify-content: center; gap: 20px;'>", unsafe_allow_html=True)
+    st.markdown(f'<a href="{link_whatsapp1}" style="padding: 12px; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">📞 Solicitar Orçamento (Vendedor Gustavo)</a>', unsafe_allow_html=True)
+    st.markdown(f'<a href="{link_whatsapp2}" style="padding: 12px; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">📞 Solicitar Orçamento (Vendedor José)</a>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
