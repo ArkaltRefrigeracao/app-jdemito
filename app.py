@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 
-# 🔹 Configuração da página
+# 🔹 Esta linha DEVE ser a primeira do código!
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 
 # Função para carregar os dados da planilha
@@ -46,22 +46,24 @@ placa = st.selectbox("", placas_filtradas["PLACA"])
 st.markdown(f"<p style='{titulo_style}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
 pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
-# Dicionário de imagens das peças
+# Dicionário de imagens no Google Drive
 imagens_produtos = {
-    "6196": "https://drive.google.com/uc?export=view&id=11R9gDT6FBjg6EX0zpS53PgdHPxOXCIFP"
+    "6196": "https://drive.google.com/uc?id=11R9gDT6FBjg6EX0zpS53PgdHPxOXCIFP"
 }
 
-# Exibição das peças com caixas de seleção e imagens
+# Exibição das peças com caixas de seleção
 pecas_selecionadas = []
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
-    if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
+    selecionado = st.checkbox(f"{peca} (Código: {codigo})", key=unique_key)
+    if selecionado:
         pecas_selecionadas.append((peca, codigo))
+        
+        # Exibir imagem da peça, se disponível
         if str(codigo) in imagens_produtos:
-            link_imagem = imagens_produtos[str(codigo)]
-            st.image(link_imagem, caption=f"Imagem de {peca}", use_container_width=True)
+            st.image(imagens_produtos[str(codigo)], caption=f"Imagem de {peca}", use_column_width=True)
         else:
-            st.warning(f"Imagem não disponível para {peca}.")
+            st.write("Imagem não disponível")
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
@@ -86,6 +88,6 @@ if pecas_selecionadas:
     link_whatsapp1 = f"https://api.whatsapp.com/send?phone={numero_whatsapp1}&text={urllib.parse.quote(mensagem_formatada)}"
     link_whatsapp2 = f"https://api.whatsapp.com/send?phone={numero_whatsapp2}&text={urllib.parse.quote(mensagem_formatada)}"
     
-    st.markdown(f'<a href="{link_whatsapp1}" style="display: block; padding: 10px; text-align: center; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px;">\ud83d\udcde Solicitar Orçamento (Vendedor Gustavo)</a>', unsafe_allow_html=True)
+    st.markdown(f'<a href="{link_whatsapp1}" style="display: block; padding: 10px; text-align: center; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px;">📞 Solicitar Orçamento (Vendedor Gustavo)</a>', unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown(f'<a href="{link_whatsapp2}" style="display: block; padding: 10px; text-align: center; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px;">\ud83d\udcde Solicitar Orçamento (Vendedor José)</a>', unsafe_allow_html=True)
+    st.markdown(f'<a href="{link_whatsapp2}" style="display: block; padding: 10px; text-align: center; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px;">📞 Solicitar Orçamento (Vendedor José)</a>', unsafe_allow_html=True)
