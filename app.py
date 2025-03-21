@@ -51,7 +51,10 @@ pecas_selecionadas = []
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
     if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
-        link_imagem = f"https://drive.google.com/uc?export=view&id={codigo}"  # Ajuste para buscar a imagem correta
+        if codigo == 6196:
+            link_imagem = "https://drive.google.com/uc?export=view&id=1FrYBRZxQGq3TYHT39f1ccw7cEg8G_tBq"
+        else:
+            link_imagem = ""
         pecas_selecionadas.append((peca, codigo, link_imagem))
         if link_imagem:
             st.image(link_imagem, width=150)
