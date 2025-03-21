@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 
-# 🔹 Esta linha DEVE ser a primeira do código!
+# 🔹 Configuração da página
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 
 # Função para carregar os dados da planilha
@@ -46,12 +46,19 @@ placa = st.selectbox("", placas_filtradas["PLACA"])
 st.markdown(f"<p style='{titulo_style}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
 pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
-# Exibição das peças com caixas de seleção
+# Dicionário de imagens das peças
+imagens_produtos = {
+    "6196": "https://drive.google.com/uc?id=11R9gDT6FBjg6EX0zpS53PgdHPxOXCIFP"
+}
+
+# Exibição das peças com caixas de seleção e imagens
 pecas_selecionadas = []
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
     if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
         pecas_selecionadas.append((peca, codigo))
+        if str(codigo) in imagens_produtos:
+            st.image(imagens_produtos[str(codigo)], caption=f"Imagem de {peca}", use_column_width=True)
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
