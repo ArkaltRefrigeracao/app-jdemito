@@ -44,26 +44,18 @@ placa = st.selectbox("", placas_filtradas["PLACA"])
 
 # Exibir peças disponíveis
 st.markdown(f"<p style='{titulo_style}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
-pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
+pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO", "LINK_IMAGEM"]].values.tolist()
 
-# Dicionário de imagens no Google Drive
-imagens_produtos = {
-    "6196": "https://drive.google.com/uc?id=11R9gDT6FBjg6EX0zpS53PgdHPxOXCIFP"
-}
-
-# Exibição das peças com caixas de seleção
+# Exibição das peças com caixas de seleção e imagens
 pecas_selecionadas = []
-for idx, (peca, codigo) in enumerate(pecas_disponiveis):
+for idx, (peca, codigo, link_imagem) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
-    selecionado = st.checkbox(f"{peca} (Código: {codigo})", key=unique_key)
-    if selecionado:
-        pecas_selecionadas.append((peca, codigo))
-        
-        # Exibir imagem da peça, se disponível
-        if str(codigo) in imagens_produtos:
-            st.image(imagens_produtos[str(codigo)], caption=f"Imagem de {peca}", use_column_width=True)
-        else:
-            st.write("Imagem não disponível")
+    if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
+        pecas_selecionadas.append((peca, codigo, link_imagem))
+    
+    if link_imagem:
+        link_direto = link_imagem.replace("https://drive.google.com/file/d/", "https://drive.google.com/uc?id=").split("/view")[0]
+        st.image(link_direto, caption=f"Imagem de {peca}", use_container_width=True)
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
@@ -75,7 +67,7 @@ def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
     
     🛠️ Peças solicitadas:
     """
-    for peca, codigo in pecas_selecionadas:
+    for peca, codigo, _ in pecas_selecionadas:
         mensagem += f"- {peca} (Código: {codigo})\n"
     return mensagem.strip()
 
