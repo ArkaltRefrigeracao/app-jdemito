@@ -31,32 +31,32 @@ with col1:
 
 with col2:
     st.markdown("""
-        <h1 style='text-align: center; 
-                   background: linear-gradient(to right, #003366, #0055A4, #666666); 
-                   -webkit-background-clip: text; 
-                   color: transparent;'>
-            CATÁLOGO DE PEÇAS
-        </h1>
+        <div style='text-align: center; 
+                    padding: 10px; 
+                    background: linear-gradient(to right, #003366, #0055A4, #666666);
+                    border-radius: 5px;'>
+            <h1 style='color: white; margin: 0;'>CATÁLOGO DE PEÇAS</h1>
+        </div>
     """, unsafe_allow_html=True)
-
+    
     st.markdown("<h4 style='text-align: center; color: gray;'>Grupo J. Demito</h4>", unsafe_allow_html=True)
 
 # Padronização do estilo dos títulos
-titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"  # Azul escuro
-titulo_azul_claro = "font-size:20px; font-weight:bold; color:#0055A4;"  # Azul mais claro
-titulo_cinza_claro = "font-size:20px; font-weight:bold; color:#666666;"  # Cinza mais claro
+titulo_style_veiculo = "font-size:20px; font-weight:bold; color:#003366;"  # Azul escuro
+titulo_style_placa = "font-size:20px; font-weight:bold; color:#A9A9A9;"  # Cinza claro
+titulo_style_pecas = "font-size:20px; font-weight:bold; color:#3385FF;"  # Azul claro
 
-# Seleção do tipo de veículo (com azul escuro)
-st.markdown(f"<p style='{titulo_azul_escuro}'>🚛 Escolha o tipo de veículo:</p>", unsafe_allow_html=True)
+# Seleção do tipo de veículo
+st.markdown(f"<p style='{titulo_style_veiculo}'>🚛 Escolha o tipo de veículo:</p>", unsafe_allow_html=True)
 tipo_veiculo = st.selectbox("", df_placas["TIPO DE VEÍCULO"].unique())
 
-# Seleção da placa (com cinza mais claro)
-st.markdown(f"<p style='{titulo_cinza_claro}'>🚗 Escolha a placa:</p>", unsafe_allow_html=True)
+# Seleção da placa
+st.markdown(f"<p style='{titulo_style_placa}'>🚗 Escolha a placa:</p>", unsafe_allow_html=True)
 placas_filtradas = df_placas[df_placas["TIPO DE VEÍCULO"] == tipo_veiculo]
 placa = st.selectbox("", placas_filtradas["PLACA"])
 
-# Exibir peças disponíveis (com azul mais claro)
-st.markdown(f"<p style='{titulo_azul_claro}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
+# Exibir peças disponíveis
+st.markdown(f"<p style='{titulo_style_pecas}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
 pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
 # Exibição das peças com caixas de seleção e imagens
