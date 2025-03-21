@@ -58,7 +58,7 @@ for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
         pecas_selecionadas.append((peca, codigo))
         if str(codigo) in imagens_produtos:
-            st.image(imagens_produtos[str(codigo)], caption=f"Imagem de {peca}", use_column_width=True)
+            st.image(imagens_produtos[str(codigo)], caption=f"Imagem de {peca}", use_container_width=True)
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
