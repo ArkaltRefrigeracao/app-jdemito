@@ -2,14 +2,14 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 
-# 🔹 Esta linha DEVE ser a primeira do código!
+# 🔹 Configuração da página
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 
 # URL base do repositório GitHub onde as imagens estão armazenadas
 GITHUB_REPO_URL = "https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/"
 
 # Função para carregar os dados da planilha
-@st.cache_data(ttl=60)  # Atualiza os dados a cada 60 segundos
+@st.cache_data(ttl=60)
 def load_data():
     df_placas = pd.read_excel("TESTE 222.xlsx", sheet_name="PLACAS")
     df_pecas = pd.read_excel("TESTE 222.xlsx", sheet_name="PEÇAS22")
@@ -17,8 +17,8 @@ def load_data():
 
 # Criar um botão para atualizar manualmente os dados
 if st.button("🔄 Atualizar Dados"):
-    st.cache_data.clear()  # Limpa o cache
-    st.rerun()  # Recarrega a aplicação corretamente
+    st.cache_data.clear()
+    st.rerun()
 
 # Carregar os dados da planilha
 df_placas, df_pecas = load_data()
@@ -49,24 +49,17 @@ placa = st.selectbox("", placas_filtradas["PLACA"])
 st.markdown(f"<p style='{titulo_style}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
 pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
-# Exibição das peças com caixas de seleção e imagens do GitHub
+# Exibição das peças com caixas de seleção e imagens
 pecas_selecionadas = []
-imagem_padrao_url = f"{GITHUB_REPO_URL}imagem_padrao.jpg"  # Substitua pela imagem padrão no GitHub
 
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
-    imagem_url = f"{GITHUB_REPO_URL}{codigo}.jpg"  # URL da imagem da peça
-
-    col1, col2 = st.columns([1, 4])
-    with col1:
-        try:
-            st.image(imagem_url, width=50)  # Exibir imagem da peça
-        except:
-            st.image(imagem_padrao_url, width=50)  # Se der erro, usa a imagem padrão
+    selecionado = st.checkbox(f"{peca} (Código: {codigo})", key=unique_key)
     
-    with col2:
-        if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
-            pecas_selecionadas.append((peca, codigo))
+    if selecionado:
+        pecas_selecionadas.append((peca, codigo))
+        imagem_url = f"{GITHUB_REPO_URL}{codigo}.jpg"  # URL da imagem da peça
+        st.image(imagem_url, width=100)  # Exibe a imagem apenas se a peça for selecionada
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
