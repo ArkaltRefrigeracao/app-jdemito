@@ -2,21 +2,11 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 
-# 🔹 Configuração inicial do app
+# 🔹 Esta linha DEVE ser a primeira do código!
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 
-# Aplicando imagem de fundo
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background: url('image.png') no-repeat center center fixed;
-        background-size: cover;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# URL base do repositório GitHub onde as imagens estão armazenadas
+GITHUB_REPO_URL = "https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/"
 
 # Função para carregar os dados da planilha
 @st.cache_data(ttl=60)  # Atualiza os dados a cada 60 segundos
@@ -37,7 +27,7 @@ df_placas, df_pecas = load_data()
 col1, col2, col3 = st.columns([1, 3, 1])  
 
 with col1:
-    st.image("https://gilt-site.com/arkaltfoto.JPG", width=120)  
+    st.image("arkaltfoto.JPG", width=120)  
 
 with col2:
     st.markdown("<h1 style='text-align: center; color: orange;'>CATÁLOGO DE PEÇAS</h1>", unsafe_allow_html=True)
@@ -59,20 +49,24 @@ placa = st.selectbox("", placas_filtradas["PLACA"])
 st.markdown(f"<p style='{titulo_style}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
 pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
-# Exibição das peças com imagens e caixas de seleção
+# Exibição das peças com caixas de seleção e imagens do GitHub
 pecas_selecionadas = []
-st.markdown("<div style='display: flex; flex-wrap: wrap; gap: 20px; align-items: center;'>", unsafe_allow_html=True)
+imagem_padrao_url = f"{GITHUB_REPO_URL}imagem_padrao.jpg"  # Substitua pela imagem padrão no GitHub
+
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
-    imagem_url = f"https://gilt-site.com/imagens/{codigo}.jpg"  # Ajuste o link conforme necessário
+    imagem_url = f"{GITHUB_REPO_URL}{codigo}.jpg"  # URL da imagem da peça
+
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        try:
+            st.image(imagem_url, width=50)  # Exibir imagem da peça
+        except:
+            st.image(imagem_padrao_url, width=50)  # Se der erro, usa a imagem padrão
     
-    col_img, col_text = st.columns([1, 4])
-    with col_img:
-        st.image(imagem_url, width=80)
-    with col_text:
+    with col2:
         if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
             pecas_selecionadas.append((peca, codigo))
-st.markdown("</div>", unsafe_allow_html=True)
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
@@ -97,7 +91,6 @@ if pecas_selecionadas:
     link_whatsapp1 = f"https://api.whatsapp.com/send?phone={numero_whatsapp1}&text={urllib.parse.quote(mensagem_formatada)}"
     link_whatsapp2 = f"https://api.whatsapp.com/send?phone={numero_whatsapp2}&text={urllib.parse.quote(mensagem_formatada)}"
     
-    st.markdown("<div style='display: flex; justify-content: center; gap: 20px;'>", unsafe_allow_html=True)
-    st.markdown(f'<a href="{link_whatsapp1}" style="padding: 12px; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">📞 Solicitar Orçamento (Vendedor Gustavo)</a>', unsafe_allow_html=True)
-    st.markdown(f'<a href="{link_whatsapp2}" style="padding: 12px; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">📞 Solicitar Orçamento (Vendedor José)</a>', unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(f'<a href="{link_whatsapp1}" style="display: block; padding: 10px; text-align: center; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px;">📞 Solicitar Orçamento (Vendedor Gustavo)</a>', unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown(f'<a href="{link_whatsapp2}" style="display: block; padding: 10px; text-align: center; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 5px;">📞 Solicitar Orçamento (Vendedor José)</a>', unsafe_allow_html=True)
