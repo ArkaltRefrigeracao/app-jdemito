@@ -2,11 +2,8 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 
-# 🔹 Esta linha DEVE ser a primeira do código!
+# 🔹 Configuração inicial do app
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
-
-# URL base do repositório GitHub onde as imagens estão armazenadas
-GITHUB_REPO_URL = "https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/"
 
 # Função para carregar os dados da planilha
 @st.cache_data(ttl=60)  # Atualiza os dados a cada 60 segundos
@@ -27,7 +24,7 @@ df_placas, df_pecas = load_data()
 col1, col2, col3 = st.columns([1, 3, 1])  
 
 with col1:
-    st.image("arkaltfoto.JPG", width=120)  
+    st.image("https://gilt-site.com/arkaltfoto.JPG", width=120)  
 
 with col2:
     st.markdown("<h1 style='text-align: center; color: orange;'>CATÁLOGO DE PEÇAS</h1>", unsafe_allow_html=True)
@@ -49,24 +46,20 @@ placa = st.selectbox("", placas_filtradas["PLACA"])
 st.markdown(f"<p style='{titulo_style}'>🛠️ Peças disponíveis:</p>", unsafe_allow_html=True)
 pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
-# Exibição das peças com caixas de seleção e imagens do GitHub
+# Exibição das peças com imagens e caixas de seleção
 pecas_selecionadas = []
-imagem_padrao_url = f"{GITHUB_REPO_URL}imagem_padrao.jpg"  # Substitua pela imagem padrão no GitHub
-
+st.markdown("<div style='display: flex; flex-wrap: wrap; gap: 10px;'>", unsafe_allow_html=True)
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
     unique_key = f"checkbox_{idx}"
-    imagem_url = f"{GITHUB_REPO_URL}{codigo}.jpg"  # URL da imagem da peça
-
-    col1, col2 = st.columns([1, 4])
-    with col1:
-        try:
-            st.image(imagem_url, width=50)  # Exibir imagem da peça
-        except:
-            st.image(imagem_padrao_url, width=50)  # Se der erro, usa a imagem padrão
+    imagem_url = f"https://gilt-site.com/imagens/{codigo}.jpg"  # Ajuste o link conforme necessário
     
-    with col2:
+    col_img, col_text = st.columns([1, 4])
+    with col_img:
+        st.image(imagem_url, width=60, use_column_width='auto')
+    with col_text:
         if st.checkbox(f"{peca} (Código: {codigo})", key=unique_key):
             pecas_selecionadas.append((peca, codigo))
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
