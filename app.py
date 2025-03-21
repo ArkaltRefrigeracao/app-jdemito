@@ -36,13 +36,14 @@ with col2:
 # Padronização do estilo dos títulos
 titulo_style = "font-size:20px; font-weight:bold; color:black;"
 titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"  # Azul escuro
+titulo_cinza_claro = "font-size:20px; font-weight:bold; color:#666666;"  # Cinza mais claro
 
-# Seleção do tipo de veículo (com a cor alterada para azul escuro)
+# Seleção do tipo de veículo (com azul escuro)
 st.markdown(f"<p style='{titulo_azul_escuro}'>🚛 Escolha o tipo de veículo:</p>", unsafe_allow_html=True)
 tipo_veiculo = st.selectbox("", df_placas["TIPO DE VEÍCULO"].unique())
 
-# Seleção da placa
-st.markdown(f"<p style='{titulo_style}'>🚗 Escolha a placa:</p>", unsafe_allow_html=True)
+# Seleção da placa (com cinza mais claro)
+st.markdown(f"<p style='{titulo_cinza_claro}'>🚗 Escolha a placa:</p>", unsafe_allow_html=True)
 placas_filtradas = df_placas[df_placas["TIPO DE VEÍCULO"] == tipo_veiculo]
 placa = st.selectbox("", placas_filtradas["PLACA"])
 
