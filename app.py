@@ -2,8 +2,19 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 
-# 🔹 Configuração da página
+# 🔹 Configuração da página com imagem de fundo
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
+
+# Adicionando a imagem de fundo
+page_bg_img = f'''
+<style>
+.stApp {{
+    background: url("https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/image.png") no-repeat center center fixed;
+    background-size: cover;
+}}
+</style>
+'''
+st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # URL base do repositório GitHub onde as imagens estão armazenadas
 GITHUB_REPO_URL = "https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/"
@@ -42,9 +53,9 @@ with col2:
     st.markdown("<h4 style='text-align: center; color: #FFD700;'>Grupo J. Demito</h4>", unsafe_allow_html=True)
 
 # Padronização do estilo dos títulos
-titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"  # Azul escuro
-titulo_azul_claro = "font-size:20px; font-weight:bold; color:#0055A4;"  # Azul mais claro
-titulo_cinza_claro = "font-size:20px; font-weight:bold; color:#666666;"  # Cinza mais claro
+titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"
+titulo_azul_claro = "font-size:20px; font-weight:bold; color:#0055A4;"
+titulo_cinza_claro = "font-size:20px; font-weight:bold; color:#666666;"
 
 # Criar uma sessão de estado para armazenar as seleções
 if "pecas_selecionadas" not in st.session_state:
