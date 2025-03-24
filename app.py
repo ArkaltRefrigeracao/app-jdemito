@@ -4,6 +4,17 @@ import urllib.parse
 
 # 🔹 Configuração da página com imagem de fundo
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background: url("{background_image}") no-repeat center center fixed;
+        background-size: cover;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Adicionando a imagem de fundo
 page_bg_img = f'''
