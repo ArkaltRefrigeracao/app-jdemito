@@ -2,25 +2,11 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 
-# 🛩️ Configuração da página
+# 🔹 Configuração da página
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 
 # URL base do repositório GitHub onde as imagens estão armazenadas
 GITHUB_REPO_URL = "https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/"
-BACKGROUND_IMAGE_URL = f"{GITHUB_REPO_URL}lighter_image.png"
-
-# Aplicar imagem de fundo
-st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background: url("{BACKGROUND_IMAGE_URL}") no-repeat center center fixed;
-        background-size: cover;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 # Função para carregar os dados da planilha
 @st.cache_data(ttl=60)
