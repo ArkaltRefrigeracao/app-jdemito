@@ -31,17 +31,24 @@ with col1:
 
 with col2:
     st.markdown("""
-        <h1 style='text-align: center; color: #003366;'>
+        <h1 style='text-align: center; 
+                   background: linear-gradient(to right, #003366, #0055A4, #666666); 
+                   -webkit-background-clip: text; 
+                   color: transparent;'>
             CATÁLOGO DE PEÇAS
         </h1>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h4 style='text-align: center; color: #FFC300;'>Grupo J. Demito</h4>", unsafe_allow_html=True)  # Amarelo dourado
+    st.markdown("<h4 style='text-align: center; color: #FFD700;'>Grupo J. Demito</h4>", unsafe_allow_html=True)
 
 # Padronização do estilo dos títulos
 titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"  # Azul escuro
 titulo_azul_claro = "font-size:20px; font-weight:bold; color:#0055A4;"  # Azul mais claro
 titulo_cinza_claro = "font-size:20px; font-weight:bold; color:#666666;"  # Cinza mais claro
+
+# Criar uma sessão de estado para armazenar as seleções
+if "pecas_selecionadas" not in st.session_state:
+    st.session_state.pecas_selecionadas = {}
 
 # Seleção do tipo de veículo (com azul escuro)
 st.markdown(f"<p style='{titulo_azul_escuro}'>🚛 Escolha o tipo de veículo:</p>", unsafe_allow_html=True)
@@ -57,16 +64,21 @@ st.markdown(f"<p style='{titulo_azul_claro}'>🛠️ Peças disponíveis:</p>", 
 pecas_disponiveis = df_pecas[df_pecas["PLACA"] == placa][["PEÇA", "CÓDIGO"]].values.tolist()
 
 # Exibição das peças com caixas de seleção e imagens
-pecas_selecionadas = []
+pecas_selecionadas = st.session_state.pecas_selecionadas.get(placa, set())
 
 for idx, (peca, codigo) in enumerate(pecas_disponiveis):
-    unique_key = f"checkbox_{idx}"
-    selecionado = st.checkbox(f"{peca} (Código: {codigo})", key=unique_key)
+    unique_key = f"checkbox_{placa}_{idx}"
+    selecionado = st.checkbox(f"{peca} (Código: {codigo})", key=unique_key, value=(codigo in pecas_selecionadas))
     
     if selecionado:
-        pecas_selecionadas.append((peca, codigo))
-        imagem_url = f"{GITHUB_REPO_URL}{codigo}.jpg"  # URL da imagem da peça
-        st.image(imagem_url, width=180)  # 🔹 Aumentei o tamanho da imagem para 180px
+        pecas_selecionadas.add(codigo)
+    else:
+        pecas_selecionadas.discard(codigo)
+
+    imagem_url = f"{GITHUB_REPO_URL}{codigo}.jpg"
+    st.image(imagem_url, width=180)
+
+st.session_state.pecas_selecionadas[placa] = pecas_selecionadas
 
 # Função para gerar a mensagem formatada
 def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
@@ -78,8 +90,8 @@ def gerar_mensagem(tipo_veiculo, placa, pecas_selecionadas):
     
     🛠️ Peças solicitadas:
     """
-    for peca, codigo in pecas_selecionadas:
-        mensagem += f"- {peca} (Código: {codigo})\n"
+    for codigo in pecas_selecionadas:
+        mensagem += f"- Código: {codigo}\n"
     return mensagem.strip()
 
 # Botões para solicitar orçamento
