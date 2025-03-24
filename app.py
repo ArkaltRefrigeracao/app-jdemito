@@ -2,33 +2,25 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 
-# 🔹 Configuração da página com imagem de fundo
+# 🛩️ Configuração da página
 st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
+
+# URL base do repositório GitHub onde as imagens estão armazenadas
+GITHUB_REPO_URL = "https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/"
+BACKGROUND_IMAGE_URL = f"{GITHUB_REPO_URL}lighter_image.png"
+
+# Aplicar imagem de fundo
 st.markdown(
     f"""
     <style>
     .stApp {{
-        background: url("{background_image}") no-repeat center center fixed;
+        background: url("{BACKGROUND_IMAGE_URL}") no-repeat center center fixed;
         background-size: cover;
     }}
     </style>
     """,
     unsafe_allow_html=True
 )
-
-# Adicionando a imagem de fundo
-page_bg_img = f'''
-<style>
-.stApp {{
-    background: url("https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/image.png") no-repeat center center fixed;
-    background-size: cover;
-}}
-</style>
-'''
-st.markdown(page_bg_img, unsafe_allow_html=True)
-
-# URL base do repositório GitHub onde as imagens estão armazenadas
-GITHUB_REPO_URL = "https://raw.githubusercontent.com/ArkaltRefrigeracao/app-jdemito/main/"
 
 # Função para carregar os dados da planilha
 @st.cache_data(ttl=60)
@@ -64,9 +56,9 @@ with col2:
     st.markdown("<h4 style='text-align: center; color: #FFD700;'>Grupo J. Demito</h4>", unsafe_allow_html=True)
 
 # Padronização do estilo dos títulos
-titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"
-titulo_azul_claro = "font-size:20px; font-weight:bold; color:#0055A4;"
-titulo_cinza_claro = "font-size:20px; font-weight:bold; color:#666666;"
+titulo_azul_escuro = "font-size:20px; font-weight:bold; color:#003366;"  # Azul escuro
+titulo_azul_claro = "font-size:20px; font-weight:bold; color:#0055A4;"  # Azul mais claro
+titulo_cinza_claro = "font-size:20px; font-weight:bold; color:#666666;"  # Cinza mais claro
 
 # Criar uma sessão de estado para armazenar as seleções
 if "pecas_selecionadas" not in st.session_state:
