@@ -13,9 +13,10 @@ url_imagem_banner_topo = "https://raw.githubusercontent.com/ArkaltRefrigeracao/a
 altura_maxima_banner = "90px"  # Altura máxima do banner (ex: "80px", "100px")
 # --- Fim da seção de edição ---
 
+# HTML do banner com o estilo corrigido
 st.markdown(f"""
 <a href="{link_banner_topo}" target="_blank">
-    <img src="{url_imagem_banner_topo}" style="width: 100%; height: auto; max-height: {altura_maxima_banner}; object-fit: cover; border-radius: 7px;">
+    <img src="{url_imagem_banner_topo}" style="width: 100%; height: {altura_maxima_banner}; object-fit: contain; border-radius: 7px;">
 </a>
 """, unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True) # Adiciona um espaço abaixo do banner
