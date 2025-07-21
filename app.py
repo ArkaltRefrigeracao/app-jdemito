@@ -9,7 +9,7 @@ st.set_page_config(page_title="Catálogo de Peças JDEMITO", layout="wide")
 # --- Edite esta seção para alterar o banner ---
 link_banner_topo = "https://www.amazon.com.br"  # Link de destino do banner
 # Use uma imagem de banner que seja larga. Exemplo: 1200x200 pixels
-url_imagem_banner_topo = "https://images.g2a.com/1024x400/1x1x0/banners/v1/4f2723a1-f761-4560-a292-11f4435896a2/Amazon-Banner-1180x400-PT.png"
+url_imagem_banner_topo = "https://m.media-amazon.com/images/S/al-eu-726f4d26-7fdb/83b14323-65f5-4727-8973-c6427a372506.jpg"
 altura_maxima_banner = "90px"  # Altura máxima do banner (ex: "80px", "100px")
 # --- Fim da seção de edição ---
 
